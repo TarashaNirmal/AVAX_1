@@ -1,0 +1,34 @@
+//SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract ErrorHandling{
+    uint public number;
+    address public owner;
+
+    constructor(){
+        owner = msg.sender;
+    }
+
+    function setNumber(uint _number) public {
+        require(msg.sender == owner, "Only the owner can set the number");
+        number = _number;
+    }
+    function checkNumber() public view returns(string memory){
+        assert(number!=0);
+        return "The number is set and is not zero";
+    }
+    function revertIfNumberIsLessThan(uint _threshold)public view{
+        if(number<_threshold){
+            revert("Number is less than the threshold.");
+        }
+    }
+    function demoAll(uint _number, uint _threshold) public {
+        require(msg.sender == owner, "only the owner can perform this action");
+        require(_number>0,"Number must be greater than zero");
+        number = _number;
+        assert(number>0);
+        if(number<_threshold){
+            revert("Number is less than the specified threshold.");
+        }
+    }
+}
